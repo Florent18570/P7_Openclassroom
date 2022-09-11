@@ -1,0 +1,29 @@
+header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px 50px;
+  box-shadow: 0 1px 8px #ddd;
+  background-color: white;
+  img {
+    margin-right: auto;
+    width: 390px;
+  }
+  nav {
+    button {
+      margin-right: auto;
+      font-size: 1.5em;
+      padding: 12px 20px;
+      margin-left: 30px;
+      @include Buttonblanc;
+    }
+    .login {
+      background-color: white;
+      color: black;
+    }
+    .inscription {
+      @include ButtonOrange;
+      margin-left: 30px;
+    }
+  }
+}

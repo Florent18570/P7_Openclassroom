@@ -1,10 +1,9 @@
 import React from "react";
 import Bienvenue from "./accueil/bienvenue";
 import GetPost from "./accueil/postes";
-import appareilPhoto from "../Images/dislike.png";
 import { Link } from "react-router-dom";
-
-// import logo from "../../Images/ro.png";
+import appareilPhoto from "../Images/dislike.png";
+import fermer from "../../src/Images/fermer.png";
 
 class NewPost extends React.Component {
   constructor(props) {
@@ -92,7 +91,9 @@ class NewPost extends React.Component {
             <div class="addPostTop">
               <div className="flex">
                 <h2>Nouveau Post</h2>
-                <img src="" alt="Paramètre" />
+                <Link to="/accueil">
+                  <img src={fermer} alt="fermer nouveau post" />
+                </Link>
               </div>
 
               <p>Qu'avez vous à partager ?</p>
@@ -105,7 +106,7 @@ class NewPost extends React.Component {
                 type="text"
                 value={this.state.content}
               />
-              {/* <img src={this.state.imageURL} alt="ImagePost à envoyé" /> */}
+
               <div className="button_bottom">
                 <img href={appareilPhoto}></img>
                 <input

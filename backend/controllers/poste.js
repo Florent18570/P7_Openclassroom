@@ -48,3 +48,12 @@ exports.getAllPost = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({ error }));
 };
+
+exports.deleteposte = (req, res, next) => {
+  console.log(req.params);
+  NewPostUser.deleteOne({ _id: req.body })
+    .then(() => {
+      res.status(200).json("message: delete success");
+    })
+    .catch((error) => res.status(400).json({ error }));
+};

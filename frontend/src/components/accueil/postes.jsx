@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import troispoints from "../../Images/troispoints.png";
 
 // import { ReactDOM } from "react";
 var moment = require("moment"); // require
@@ -67,7 +68,7 @@ const GetPost = (props) => {
     })
     .then((data) => {
       arraydata = Object.values(data.reverse());
-      // console.log(arraydata);
+      console.log(arraydata);
       return arraydata;
     })
     .then((arraydata) => {
@@ -82,6 +83,61 @@ const GetPost = (props) => {
         containerTop.id = "containerTop" + i;
         document.getElementById("containerPost" + i).appendChild(containerTop);
 
+        let imagetroispoints = document.createElement("img");
+        imagetroispoints.src = troispoints;
+        imagetroispoints.id = "imagetroispoints" + i;
+        imagetroispoints.alt = "imagetroispoints";
+        imagetroispoints.style.width = "30px";
+        imagetroispoints.style.height = "30px";
+        document
+          .getElementById("containerPost" + i)
+          .appendChild(imagetroispoints);
+
+        var btcimagetroispoints = document.getElementById(
+          "imagetroispoints" + i
+        );
+        btcimagetroispoints.addEventListener("click", updateBtn);
+
+        /////////////////////////////////////////////////
+
+        function updateBtn() {
+          if (div2.style.display == "none") {
+            div2.style.display = "block";
+          } else {
+            div2.style.display = "none";
+          }
+        }
+
+        let div2 = document.createElement("div");
+        div2.className = "containerPost";
+        div2.id = "div2" + i;
+        div2.style.display = "none";
+        document.getElementById("containerPost" + i).appendChild(div2);
+
+        let link_modifier = document.createElement("a");
+        link_modifier.setAttribute("href", "/modifier_post");
+        link_modifier.id = "modifier" + i;
+        document.getElementById("div2" + i).appendChild(link_modifier);
+
+        let modifier = document.createElement("p");
+        modifier.innerHTML = "Modifier";
+        modifier.className = "user";
+        document.getElementById("modifier" + i).appendChild(modifier);
+
+        let link_suprimer = document.createElement("a");
+        link_suprimer.setAttribute(
+          "href",
+          "/delete_post?id=" + arraydata[i]._id
+        );
+        link_suprimer.id = "suprimer" + i;
+        document.getElementById("div2" + i).appendChild(link_suprimer);
+
+        let suprimer = document.createElement("p");
+        suprimer.innerHTML = "Supprimer";
+        suprimer.className = "user";
+        document.getElementById("suprimer" + i).appendChild(suprimer);
+
+        ////////////////////////////////////////////////////////////////////
         let user = document.createElement("p");
         user.innerHTML = arraydata[i].nom + " " + arraydata[i].prénom;
         user.id = "p" + i;
@@ -89,9 +145,9 @@ const GetPost = (props) => {
 
         document.getElementById("containerTop" + i).appendChild(user);
 
-        let div2 = document.createElement("div");
-        div2.id = "div" + i;
-        document.getElementById("containerTop" + i).appendChild(div2);
+        let div3 = document.createElement("div");
+        div3.id = "div" + i;
+        document.getElementById("containerTop" + i).appendChild(div3);
 
         let p = document.createElement("p");
         p.innerHTML = arraydata[i].inputTextPost;

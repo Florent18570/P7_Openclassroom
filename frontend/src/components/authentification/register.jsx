@@ -7,7 +7,7 @@ class register extends React.Component {
     super(props);
     this.state = {
       nom: "",
-      prénom: "",
+      prenom: "",
       email: "",
       password: "",
     };
@@ -23,11 +23,11 @@ class register extends React.Component {
   };
 
   send = async () => {
-    const { nom, prénom, email, password } = this.state;
+    const { nom, prenom, email, password } = this.state;
 
     const data = {
       nom: nom,
-      prénom: prénom,
+      prenom: prenom,
       email: email,
       password: password,
     };
@@ -72,10 +72,10 @@ class register extends React.Component {
                 value={this.Nom}
               />
               <input
-                name="prénom"
-                placeholder="prénom"
+                name="prenom"
+                placeholder="prenom"
                 onChange={this.handleChange}
-                value={this.Prénom}
+                value={this.prenom}
               />
               <input
                 name="email"

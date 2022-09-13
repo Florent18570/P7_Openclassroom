@@ -68,10 +68,12 @@ const GetPost = (props) => {
     })
     .then((data) => {
       arraydata = Object.values(data.reverse());
-      console.log(arraydata);
+      console.log(data);
       return arraydata;
     })
     .then((arraydata) => {
+      console.log(arraydata.length);
+
       for (i = 0; i < arraydata.length; i++) {
         let div = document.createElement("div");
         div.className = "containerPost";
@@ -115,7 +117,10 @@ const GetPost = (props) => {
         document.getElementById("containerPost" + i).appendChild(div2);
 
         let link_modifier = document.createElement("a");
-        link_modifier.setAttribute("href", "/modifier_post");
+        link_modifier.setAttribute(
+          "href",
+          "/modifier_post?id=" + arraydata[i]._id
+        );
         link_modifier.id = "modifier" + i;
         document.getElementById("div2" + i).appendChild(link_modifier);
 
@@ -139,7 +144,7 @@ const GetPost = (props) => {
 
         ////////////////////////////////////////////////////////////////////
         let user = document.createElement("p");
-        user.innerHTML = arraydata[i].nom + " " + arraydata[i].prénom;
+        user.innerHTML = arraydata[i].nom + " " + arraydata[i].prenom;
         user.id = "p" + i;
         user.className = "user";
 
@@ -156,7 +161,8 @@ const GetPost = (props) => {
         document.getElementById("containerPost" + i).appendChild(p);
 
         let imagePost = document.createElement("img");
-        imagePost.src = arraydata[i].inputTextPost;
+        imagePost.src =
+          "http://localhost/projet7/backend/images/" + arraydata[i].image;
         imagePost.id = "img" + i;
         imagePost.alt = "imagePost";
         document.getElementById("containerPost" + i).appendChild(imagePost);

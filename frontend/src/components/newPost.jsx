@@ -8,67 +8,53 @@ import fermer from "../../src/Images/fermer.png";
 class NewPost extends React.Component {
   constructor(props) {
     super(props);
-    let data = sessionStorage.getItem("userId");
-    console.log(data);
-
     let UserName = sessionStorage.getItem("user");
 
     this.state = {
       userId: UserName.userId,
       inputText: "",
-      // imageURL: "",
+      imageURL: "",
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.send = this.send.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.send = this.send.bind(this);
   }
 
   handleChange = (event) => {
-    // this.setState({
-    //   inputText: document.querySelector(".inputText").value,
-    // });
+    this.setState({
+      inputText: document.querySelector(".inputText").value,
+    });
     // console.log(this.state.inputText);
 
-    const name = event.target.name;
-    const value = event.target.value;
-  };
-
-  addImage = (event) => {
-    this.setState({
-      imageURL: document.querySelector(".buttonImage").value,
-    });
+    // const name = event.target.name;
+    // const value = event.target.value;
   };
 
   send = async () => {
     let UserName = sessionStorage.getItem("user");
     let arrayUser = UserName.split(",");
 
-    const imageURL = document.querySelector(".buttonImage").files[0];
+    // const imageURL = document.querySelector(".buttonImage").files[0];
 
     const date = new Date();
-    console.log(typeof date);
 
-    // const { userId, inputText, imageURL } = this.state;
-    const formatData = new formatData();
-    formatData.append("imageURL", imageURL);
-    formatData.append("post", JSON.stringify(this.state));
+    const { userId, inputText, imageURL } = this.state;
 
-    // const data = {
-    //   userId: userId,
-    //   nom: arrayUser[0],
-    //   prénom: arrayUser[1],
-    //   datePost: date,
-    //   inputTextPost: inputText,
-    //   UrlImage: imageURL,
-    // };
+    var formdata = new FormData();
+    formdata.append("image", document.getElementById("file").files[0]);
+    formdata.append("userId", arrayUser[2]);
+    formdata.append("nom", arrayUser[0]);
+    formdata.append("prenom", arrayUser[1]);
+    formdata.append("inputTextPost", inputText);
+    formdata.append("datePost", date);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
 
     try {
-      fetch("http://localhost:3001/api/poste/newpost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: formatData,
-      })
+      fetch("http://localhost:3001/api/poste/newpost", requestOptions)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -101,7 +87,7 @@ class NewPost extends React.Component {
 
             <form action="">
               <input
-                onChange={this.handleChange}
+                onBlur={this.handleChange}
                 className="inputText"
                 type="text"
                 value={this.state.content}
@@ -109,19 +95,17 @@ class NewPost extends React.Component {
 
               <div className="button_bottom">
                 <img href={appareilPhoto}></img>
+                <label for="file">Image</label>
                 <input
                   className="buttonImage"
                   type="file"
                   id="file"
                   name="imageURL"
                 />
-                <label for="file">Image</label>
 
-                <Link to="/accueil">
-                  <button onClick={this.send} className="publier" type="submit">
-                    Publier
-                  </button>
-                </Link>
+                <button onClick={this.send} className="publier" type="submit">
+                  Publier
+                </button>
               </div>
             </form>
           </div>

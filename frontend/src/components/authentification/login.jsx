@@ -48,9 +48,8 @@ class register extends React.Component {
           console.log(data.success);
           if (data.success) {
             console.log("Sucess:", data);
-            let arrayUser = [data.prénom, data.nom];
+            let arrayUser = [data.prenom, data.nom, data.userId];
             sessionStorage.setItem("user", arrayUser);
-            sessionStorage.setItem("userId", data.userId);
             window.location = "/accueil";
           }
         })

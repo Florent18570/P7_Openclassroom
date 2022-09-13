@@ -49,7 +49,7 @@ function login() {
 }
 
 export default function registerOrLogin() {
-  let data = sessionStorage.getItem("userId");
+  let data = sessionStorage.getItem("user");
   console.log(data);
 
   if (data) {

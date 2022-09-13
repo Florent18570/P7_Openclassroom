@@ -55,7 +55,8 @@ app.listen(port, () => {
   console.log(`Server is running on localhost:${port}`);
 });
 
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", stuffauthent);
 app.use("/api/poste", poste);
-app.use("/images", express.static(path.join(__dirname, "images")));
+
 module.exports = app;

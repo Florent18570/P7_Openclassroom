@@ -1,37 +1,3 @@
-// // ID retrieval with URL
-// var urlcourante = document.location.href;
-// var urlData = new URL(urlcourante);
-// let params = new URLSearchParams(window.location.search);
-
-// if (urlData.searchParams.has("id")) {
-//   var id = urlData.searchParams.get("id");
-//   console.log("id: " + id);
-//   modify(id);
-//   console.log("id: " + id);
-// }
-
-// function modify(id) {
-//   const data = {
-//     datePost: date,
-//     inputTextPost: inputText,
-//     UrlImage: imageURL,
-//   };
-
-//   fetch(`http://localhost:3001/api/poste/modifier_post/${id}`, {
-//     method: "UPDATE",
-//     body: data,
-//     headers: {
-//       "content-type": "application/json;charset=utf-8",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then(
-//       (response) =>
-//         response.status(201).json({ message: "suppression réussie" }),
-//       (window.location = "/accueil")
-//     );
-// }
-
 import React from "react";
 import Bienvenue from "./accueil/bienvenue";
 import GetPost from "./accueil/postes";
@@ -39,67 +5,62 @@ import { Link } from "react-router-dom";
 import appareilPhoto from "../Images/dislike.png";
 import fermer from "../../src/Images/fermer.png";
 
-class NewPost extends React.Component {
+class UpdatePost extends React.Component {
   constructor(props) {
     super(props);
-    let data = sessionStorage.getItem("userId");
-    console.log(data);
-
     let UserName = sessionStorage.getItem("user");
 
     this.state = {
       userId: UserName.userId,
       inputText: "",
-      // imageURL: "",
+      imageURL: "",
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.send = this.send.bind(this);
   }
 
   handleChange = (event) => {
-    // this.setState({
-    //   inputText: document.querySelector(".inputText").value,
-    // });
-    // console.log(this.state.inputText);
-
-    const name = event.target.name;
-    const value = event.target.value;
-  };
-
-  addImage = (event) => {
     this.setState({
-      imageURL: document.querySelector(".buttonImage").value,
+      inputText: document.querySelector(".inputText").value,
     });
   };
 
   send = async () => {
+    // ID retrieval with URL
+    var urlcourante = document.location.href;
+    var urlData = new URL(urlcourante);
+    let params = new URLSearchParams(window.location.search);
+
+    if (urlData.searchParams.has("id_postupdate")) {
+      var id_postupdate = urlData.searchParams.get("id_postupdate");
+      console.log(id_postupdate);
+      console.log(id_postupdate);
+    }
+
     let UserName = sessionStorage.getItem("user");
     let arrayUser = UserName.split(",");
 
-    const imageURL = document.querySelector(".buttonImage").files[0];
-
     const date = new Date();
-    console.log(typeof date);
+    const { userId, inputText, imageURL } = this.state;
 
-    // const { userId, inputText, imageURL } = this.state;
-    const formatData = new formatData();
-    formatData.append("imageURL", imageURL);
-    formatData.append("post", JSON.stringify(this.state));
+    var formdata = new FormData();
+    formdata.append("image", document.getElementById("file").files[0]);
+    formdata.append("userId", arrayUser[2]);
+    formdata.append("nom", arrayUser[0]);
+    formdata.append("prenom", arrayUser[1]);
+    formdata.append("inputTextPost", inputText);
+    formdata.append("datePost", date);
 
-    // const data = {
-    //   userId: userId,
-    //   nom: arrayUser[0],
-    //   prénom: arrayUser[1],
-    //   datePost: date,
-    //   inputTextPost: inputText,
-    //   UrlImage: imageURL,
-    // };
+    var requestOptions = {
+      method: "PUT",
+      body: formdata,
+      redirect: "follow",
+    };
 
+    console.log(formdata);
     try {
-      fetch("http://localhost:3001/api/poste/newpost", {
-        method: "POST",
-        body: formatData,
-      })
+      fetch(
+        `http://localhost:3001/api/poste/modifier_post/${id_postupdate}`,
+        requestOptions
+      )
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -121,18 +82,18 @@ class NewPost extends React.Component {
           <div className="newPostContainer">
             <div class="addPostTop">
               <div className="flex">
-                <h2>Nouveau Post</h2>
+                <h2>Modification d'un poste</h2>
                 <Link to="/accueil">
                   <img src={fermer} alt="fermer nouveau post" />
                 </Link>
               </div>
 
-              <p>Qu'avez vous à partager ?</p>
+              <p>Modification du text de poste</p>
             </div>
 
             <form action="">
               <input
-                onChange={this.handleChange}
+                onBlur={this.handleChange}
                 className="inputText"
                 type="text"
                 value={this.state.content}
@@ -140,25 +101,19 @@ class NewPost extends React.Component {
 
               <div className="button_bottom">
                 <img href={appareilPhoto}></img>
+                <label for="file">Image</label>
                 <input
                   className="buttonImage"
                   type="file"
                   id="file"
                   name="imageURL"
                 />
-                <label for="file">Image</label>
 
-                <Link to="/accueil">
-                  <button onClick={this.send} className="publier" type="submit">
-                    Publier
-                  </button>
-                </Link>
+                <button onClick={this.send} className="publier" type="submit">
+                  Valider
+                </button>
               </div>
             </form>
-          </div>
-
-          <div className="containerPost">
-            <GetPost />
           </div>
         </section>
       </>
@@ -166,4 +121,4 @@ class NewPost extends React.Component {
   }
 }
 
-export default NewPost;
+export default UpdatePost;

@@ -186,7 +186,7 @@ h1 {
 }
 
 .bigContainer {
-  width: 70%;
+  width: 63%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -247,6 +247,7 @@ h1 {
 
 .containerPost {
   width: 80%;
+  position: relative;
   margin: auto;
   background: #fad7d7;
   margin: 4px auto 19px auto;

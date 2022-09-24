@@ -29,7 +29,7 @@ class NewPost extends React.Component {
     // const value = event.target.value;
   };
 
-  send = async () => {
+  send = () => {
     let UserName = sessionStorage.getItem("user");
     let arrayUser = UserName.split(",");
 
@@ -47,24 +47,37 @@ class NewPost extends React.Component {
     formdata.append("inputTextPost", inputText);
     formdata.append("datePost", date);
 
-    var requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    };
+    if (sessionStorage.getItem("user") != null) {
+      var requestOptions = {
+        method: "POST",
+        body: formdata,
+        // Variable récupérer dans le LocalStorage
+        headers: { Authorization: arrayUser[3] },
+      };
+    } else {
+      window.location = "./login#connexion";
+      var requestOptions = null;
+    }
 
     try {
       fetch("http://localhost:3001/api/poste/newpost", requestOptions)
-        .then((response) => response.json())
+        .then((response) => {
+          return response.json();
+        })
         .then((data) => {
           console.log(data);
-          window.location = "/accueil";
+
+          window.location = "./accueil";
         })
         .catch((error) => {
-          console.error("Error:", error);
+          window.location = "./accueil";
+
+          console.log("Error:", error);
         });
     } catch (error) {
-      console.error(error);
+      window.location = "/accueil";
+      console.log("Error:", error);
+      // console.error(error);
     }
   };
 

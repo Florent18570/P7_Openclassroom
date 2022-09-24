@@ -35,6 +35,7 @@ class register extends React.Component {
     if (!password || password.length === 0) {
       return;
     }
+
     try {
       fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
@@ -48,9 +49,11 @@ class register extends React.Component {
           console.log(data.success);
           if (data.success) {
             console.log("Sucess:", data);
-            let arrayUser = [data.prenom, data.nom, data.userId];
+            let arrayUser = [data.prenom, data.nom, data.userId, data.token];
+            console.log(arrayUser);
             sessionStorage.setItem("user", arrayUser);
             window.location = "/accueil";
+            // Envoie du token
           }
         })
         .catch((error) => {

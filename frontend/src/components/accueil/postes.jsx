@@ -61,8 +61,22 @@ function datePost(arraydata, i) {
 var arraydata = 0;
 var i = 0;
 
+if (sessionStorage.getItem("user") != null) {
+  let UserName = sessionStorage.getItem("user");
+  var arrayUser = UserName.split(",");
+
+  var requestOptions = {
+    method: "GET",
+    // Variable récupérer dans le LocalStorage
+    headers: { Authorization: arrayUser[3] },
+  };
+} else {
+  window.location = "./login#connexion";
+  var requestOptions = null;
+}
+
 const GetPost = (props) => {
-  fetch("http://localhost:3001/api/poste/getpost")
+  fetch("http://localhost:3001/api/poste/getpost", requestOptions)
     .then((response) => {
       return response.json();
     })
@@ -72,7 +86,7 @@ const GetPost = (props) => {
       return arraydata;
     })
     .then((arraydata) => {
-      console.log(arraydata.length);
+      //console.log(arraydata.length);
 
       for (i = 0; i < arraydata.length; i++) {
         let div = document.createElement("div");
@@ -119,7 +133,7 @@ const GetPost = (props) => {
         let link_modifier = document.createElement("a");
         link_modifier.setAttribute(
           "href",
-          "/modifier_post?id=" + arraydata[i]._id
+          "/modifier_post/?id_postupdate=" + arraydata[i]._id
         );
         link_modifier.id = "modifier" + i;
         document.getElementById("div2" + i).appendChild(link_modifier);
@@ -132,7 +146,7 @@ const GetPost = (props) => {
         let link_suprimer = document.createElement("a");
         link_suprimer.setAttribute(
           "href",
-          "/delete_post?id=" + arraydata[i]._id
+          "/delete_post/?id=" + arraydata[i]._id
         );
         link_suprimer.id = "suprimer" + i;
         document.getElementById("div2" + i).appendChild(link_suprimer);
@@ -154,18 +168,36 @@ const GetPost = (props) => {
         div3.id = "div" + i;
         document.getElementById("containerTop" + i).appendChild(div3);
 
+        let div_bottom = document.createElement("div");
+        div_bottom.id = "div_bottom" + i;
+        div_bottom.style.width = "680px";
+        div_bottom.style.height = "auto";
+        div_bottom.style.position = "relative";
+        div_bottom.style.maxWidth = "100%";
+        div_bottom.style.margin = "auto";
+
+        document.getElementById("containerPost" + i).appendChild(div_bottom);
+
         let p = document.createElement("p");
         p.innerHTML = arraydata[i].inputTextPost;
         p.id = "p" + i;
         p.className = "post";
-        document.getElementById("containerPost" + i).appendChild(p);
+        document.getElementById("div_bottom" + i).appendChild(p);
 
         let imagePost = document.createElement("img");
         imagePost.src =
           "http://localhost/projet7/backend/images/" + arraydata[i].image;
         imagePost.id = "img" + i;
+        // imagePost.style.width = "300px";
+        imagePost.style.maxWidth = "100%";
+        imagePost.style.height = "auto";
+        imagePost.style.maxHeight = "100%";
+        imagePost.style.objectFit = "cover";
+        // imagePost.style.boxShadow = "8px 8px 10px 0 rgba(0,0,0,0.5)";
+        imagePost.style.borderRadius = "0 0 21px 21px";
+
         imagePost.alt = "imagePost";
-        document.getElementById("containerPost" + i).appendChild(imagePost);
+        document.getElementById("div_bottom" + i).appendChild(imagePost);
 
         datePost(arraydata, i);
       }

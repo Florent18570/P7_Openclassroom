@@ -5,7 +5,7 @@ h1 {
 }
 
 .bigContainer {
-  width: 70%;
+  width: 63%;
   display: flex;
   flex-direction: column;
   box-shadow: -9px 12px 20px 2px rgba(0, 0, 0, 0.46);
@@ -43,6 +43,7 @@ h1 {
 
 .containerPost {
   width: 80%;
+  position: relative;
   margin: auto;
   background: #fad7d7;
   margin: 4px auto 19px auto;

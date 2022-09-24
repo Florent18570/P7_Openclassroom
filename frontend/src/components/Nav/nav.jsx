@@ -50,7 +50,7 @@ function login() {
 
 export default function registerOrLogin() {
   let data = sessionStorage.getItem("user");
-  console.log(data);
+  // console.log(data);
 
   if (data) {
     return login();

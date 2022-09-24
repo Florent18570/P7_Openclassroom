@@ -10,7 +10,8 @@ exports.signup = (req, res, next) => {
         email: req.body.email,
         password: hash,
         nom: req.body.nom,
-        prénom: req.body.prénom,
+        prenom: req.body.prenom,
+        // admin false si utilisateur non admin (par default)
       });
       user
         .save()
@@ -40,8 +41,9 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             success: "connexion réussite ! ",
             userId: user._id,
-            prénom: user.prénom,
+            prenom: user.prenom,
             nom: user.nom,
+
             token: jwt.sign(
               {
                 userId: user._id,

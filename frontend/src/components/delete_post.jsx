@@ -11,10 +11,21 @@ if (urlData.searchParams.has("id") || urlData.searchParams.has("delete_post")) {
 }
 
 function deletePostId(id) {
-  fetch(`http://localhost:3001/api/poste/deletepost${id}`, {
-    method: "DELETE",
-    body: null,
-  })
+  if (sessionStorage.getItem("user") != null) {
+    let UserName = sessionStorage.getItem("user");
+    var arrayUser = UserName.split(",");
+
+    var requestOptions = {
+      method: "DELETE",
+      // Variable récupérer dans le LocalStorage
+      headers: { Authorization: arrayUser[3] },
+    };
+  } else {
+    window.location = "./login#connexion";
+    var requestOptions = null;
+  }
+
+  fetch(`http://localhost:3001/api/poste/deletepost${id}`, requestOptions)
     .then((response) => response.json())
     .then((data) => {
       console.log(data);

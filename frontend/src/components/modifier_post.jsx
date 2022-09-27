@@ -4,73 +4,129 @@ import GetPost from "./accueil/postes";
 import { Link } from "react-router-dom";
 import appareilPhoto from "../Images/dislike.png";
 import fermer from "../../src/Images/fermer.png";
+import { useState } from "react";
 
-class UpdatePost extends React.Component {
+class NewPost extends React.Component {
   constructor(props) {
     super(props);
     let UserName = sessionStorage.getItem("user");
-
+    let arrayUser = UserName.split(",");
+    // console.log(arrayUser);
     this.state = {
-      userId: UserName.userId,
-      inputText: "",
-      imageURL: "",
+      inputTextPost: "toto",
+      image: "",
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange = (event) => {
+  componentDidMount() {
+    var str = window.location.href;
+    var url = new URL(str);
+    var idPostValue = url.searchParams.get("id_postupdate");
+
+    const data = {
+      idPost: idPostValue,
+    };
+
+    console.log(JSON.stringify(data));
+
+    try {
+      const datasearch = async () => {
+        var requestOptions2 = {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await fetch(
+          `http://localhost:3001/api/poste/getPostSelected`,
+          requestOptions2
+        );
+        const dataSearch = await response.json();
+        var datatext = dataSearch.inputTextPost;
+        var image = dataSearch.image;
+
+        this.setState({
+          inputTextPost: datatext,
+          image: "post.image",
+        });
+      };
+
+      datasearch();
+    } catch (error) {
+      // window.location = "/login";
+      console.log("Error:", error);
+    }
+  }
+
+  handleChange = (e) => {
     this.setState({
-      inputText: document.querySelector(".inputText").value,
+      inputTextPost: e.target.value,
     });
   };
 
-  send = async () => {
-    // ID retrieval with URL
-    var urlcourante = document.location.href;
-    var urlData = new URL(urlcourante);
-    let params = new URLSearchParams(window.location.search);
-
-    if (urlData.searchParams.has("id_postupdate")) {
-      var id_postupdate = urlData.searchParams.get("id_postupdate");
-      console.log(id_postupdate);
-      console.log(id_postupdate);
-    }
-
+  send = () => {
     let UserName = sessionStorage.getItem("user");
     let arrayUser = UserName.split(",");
 
-    const date = new Date();
-    const { userId, inputText, imageURL } = this.state;
+    var str = window.location.href;
+    var url = new URL(str);
+    var idPostValue = url.searchParams.get("id_postupdate");
+    console.log(idPostValue);
 
-    var formdata = new FormData();
-    formdata.append("image", document.getElementById("file").files[0]);
-    formdata.append("userId", arrayUser[2]);
-    formdata.append("nom", arrayUser[0]);
-    formdata.append("prenom", arrayUser[1]);
-    formdata.append("inputTextPost", inputText);
-    formdata.append("datePost", date);
+    const date = new Date();
+    const { inputTextPost, image } = this.state;
+
+    const dataUpdate = {
+      userId: arrayUser[2],
+      nom: arrayUser[0],
+      prenom: arrayUser[1],
+      inputTextPost: inputTextPost,
+      datePost: date,
+      image: "toto",
+    };
+
+    // if (sessionStorage.getItem("user") != null) {
+    //   var requestOptions = {
+    //     method: "POST",
+    //     body: JSON.stringify(dataUpdate),
+    //     // Variable récupérer dans le LocalStorage
+    //     headers: { Authorization: arrayUser[3] },
+    //   };
+    // } else {
+    //   window.location = "./login#connexion";
+    //   var requestOptions = null;
+    // }
 
     var requestOptions = {
       method: "PUT",
-      body: formdata,
-      redirect: "follow",
+      body: JSON.stringify(dataUpdate),
+      // Variable récupérer dans le LocalStorage
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
-    console.log(formdata);
     try {
       fetch(
-        `http://localhost:3001/api/poste/modifier_post/${id_postupdate}`,
+        `http://localhost:3001/api/poste/modifier_post/${idPostValue}`,
         requestOptions
       )
-        .then((response) => response.json())
+        .then((response) => {
+          return response.json();
+        })
         .then((data) => {
-          console.log(data);
           window.location = "/accueil";
         })
         .catch((error) => {
-          console.error("Error:", error);
+          window.location = "/accueil";
+          console.log("Error:", error);
         });
     } catch (error) {
-      console.error(error);
+      window.location = "/accueil";
+      console.log("Error:", error);
+      // console.error(error);
     }
   };
 
@@ -93,10 +149,10 @@ class UpdatePost extends React.Component {
 
             <form action="">
               <input
-                onBlur={this.handleChange}
+                onChange={this.handleChange}
                 className="inputText"
                 type="text"
-                value={this.state.content}
+                value={this.state.inputTextPost}
               />
 
               <div className="button_bottom">
@@ -121,4 +177,4 @@ class UpdatePost extends React.Component {
   }
 }
 
-export default UpdatePost;
+export default NewPost;

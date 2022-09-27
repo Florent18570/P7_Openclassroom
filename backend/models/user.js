@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
   prenom: { type: String },
   datePost: { type: String },
   image: { type: String },
+  Adminisatrateur: { type: Boolean, default: false },
 });
 
 userSchema.plugin(uniqueValidator);

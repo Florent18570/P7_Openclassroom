@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Bienvenue = () => {
   let data = sessionStorage.getItem("user");
   let arrayUser = data.split(",");
-  console.log(arrayUser);
+  // console.log(arrayUser);
 
   let param = {
     nom: arrayUser[0],

@@ -11,7 +11,6 @@ exports.signup = (req, res, next) => {
         password: hash,
         nom: req.body.nom,
         prenom: req.body.prenom,
-        // admin false si utilisateur non admin (par default)
       });
       user
         .save()
@@ -22,6 +21,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+  console.log(req.body.email);
   userSchema
     .findOne({ email: req.body.email })
     .then((user) => {
@@ -43,7 +43,7 @@ exports.login = (req, res, next) => {
             userId: user._id,
             prenom: user.prenom,
             nom: user.nom,
-
+            Adminisatrateur: user.Adminisatrateur,
             token: jwt.sign(
               {
                 userId: user._id,
@@ -56,13 +56,4 @@ exports.login = (req, res, next) => {
         .catch((error) => res.status(500).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
-};
-
-exports.alluser = (req, res, next) => {
-  userSchema
-    .find()
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch((error) => res.status(400).json({ error }));
 };

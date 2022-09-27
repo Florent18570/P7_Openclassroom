@@ -49,8 +49,14 @@ class register extends React.Component {
           console.log(data.success);
           if (data.success) {
             console.log("Sucess:", data);
-            let arrayUser = [data.prenom, data.nom, data.userId, data.token];
-            console.log(arrayUser);
+            let arrayUser = [
+              data.prenom,
+              data.nom,
+              data.userId,
+              data.token,
+              data.Adminisatrateur,
+            ];
+            console.log(data.Adminisatrateur);
             sessionStorage.setItem("user", arrayUser);
             window.location = "/accueil";
             // Envoie du token

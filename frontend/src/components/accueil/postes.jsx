@@ -38,8 +38,6 @@ function datePost(arraydata, i) {
             </h1>
           );
         }
-
-        // console.log(tempsPost.props.children);
       }
       break;
 
@@ -64,6 +62,7 @@ var i = 0;
 if (sessionStorage.getItem("user") != null) {
   let UserName = sessionStorage.getItem("user");
   var arrayUser = UserName.split(",");
+  console.log(arrayUser);
 
   var requestOptions = {
     method: "GET",
@@ -88,7 +87,8 @@ const GetPost = (props) => {
     .then((arraydata) => {
       //console.log(arraydata.length);
 
-      for (i = 0; i < arraydata.length; i++) {
+      for (var i = 0; i < arraydata.length; i++) {
+        localStorage.clear();
         let div = document.createElement("div");
         div.className = "containerPost";
         div.id = "containerPost" + i;
@@ -99,20 +99,37 @@ const GetPost = (props) => {
         containerTop.id = "containerTop" + i;
         document.getElementById("containerPost" + i).appendChild(containerTop);
 
-        let imagetroispoints = document.createElement("img");
-        imagetroispoints.src = troispoints;
-        imagetroispoints.id = "imagetroispoints" + i;
-        imagetroispoints.alt = "imagetroispoints";
-        imagetroispoints.style.width = "30px";
-        imagetroispoints.style.height = "30px";
-        document
-          .getElementById("containerPost" + i)
-          .appendChild(imagetroispoints);
+        if (arrayUser[4] == "true") {
+          let imagetroispoints = document.createElement("img");
+          imagetroispoints.src = troispoints;
+          imagetroispoints.id = "imagetroispoints" + i;
+          imagetroispoints.alt = "imagetroispoints";
+          imagetroispoints.style.width = "30px";
+          imagetroispoints.style.height = "30px";
+          document
+            .getElementById("containerPost" + i)
+            .appendChild(imagetroispoints);
 
-        var btcimagetroispoints = document.getElementById(
-          "imagetroispoints" + i
-        );
-        btcimagetroispoints.addEventListener("click", updateBtn);
+          var btcimagetroispoints = document.getElementById(
+            "imagetroispoints" + i
+          );
+          btcimagetroispoints.addEventListener("click", updateBtn);
+        } else if (arraydata[i].userId == arrayUser[2]) {
+          let imagetroispoints = document.createElement("img");
+          imagetroispoints.src = troispoints;
+          imagetroispoints.id = "imagetroispoints" + i;
+          imagetroispoints.alt = "imagetroispoints";
+          imagetroispoints.style.width = "30px";
+          imagetroispoints.style.height = "30px";
+          document
+            .getElementById("containerPost" + i)
+            .appendChild(imagetroispoints);
+
+          var btcimagetroispoints = document.getElementById(
+            "imagetroispoints" + i
+          );
+          btcimagetroispoints.addEventListener("click", updateBtn);
+        }
 
         /////////////////////////////////////////////////
 
@@ -159,7 +176,7 @@ const GetPost = (props) => {
         ////////////////////////////////////////////////////////////////////
         let user = document.createElement("p");
         user.innerHTML = arraydata[i].nom + " " + arraydata[i].prenom;
-        user.id = "p" + i;
+        user.id = "pUser" + i;
         user.className = "user";
 
         document.getElementById("containerTop" + i).appendChild(user);
@@ -198,7 +215,6 @@ const GetPost = (props) => {
 
         imagePost.alt = "imagePost";
         document.getElementById("div_bottom" + i).appendChild(imagePost);
-
         datePost(arraydata, i);
       }
 

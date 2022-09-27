@@ -17,8 +17,9 @@ const fileStorageEngine = multer.diskStorage({
 const upload = multer({ storage: fileStorageEngine });
 
 router.post("/newpost", auth, upload.single("image"), poste.newPost);
+router.post("/getPostSelected", poste.getPostSelected);
 router.get("/getpost", auth, poste.getAllPost);
 router.delete("/deletepost:id", auth, poste.deleteposte);
-router.put("/modifier_post/:id", auth, poste.update);
+router.put("/modifier_post/:id", poste.update);
 
 module.exports = router;

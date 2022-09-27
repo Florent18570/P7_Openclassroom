@@ -6,6 +6,4 @@ router.post("/signup", authcontrol.signup);
 
 router.post("/login", authcontrol.login);
 
-router.get("/", authcontrol.alluser);
-
 module.exports = router;

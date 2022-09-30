@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import troispoints from "../../Images/troispoints.png";
+import coeur from "../../Images/coeur.png";
+import down from "../../Images/dislike.png";
 
 // import { ReactDOM } from "react";
 var moment = require("moment"); // require
@@ -216,6 +218,75 @@ const GetPost = (props) => {
         imagePost.alt = "imagePost";
         document.getElementById("div_bottom" + i).appendChild(imagePost);
         datePost(arraydata, i);
+
+        let like_dislike = document.createElement("div");
+        like_dislike.id = "like_dislike" + i;
+        document.getElementById("containerPost" + i).appendChild(like_dislike);
+
+        let like = document.createElement("img");
+        like.src = coeur;
+        like.alt = "like";
+        like.id = "like" + i;
+        document.getElementById("like_dislike" + i).appendChild(like);
+
+        let plike = document.createElement("p");
+        plike.id = "plike" + i;
+        plike.innerText = arraydata[i].like;
+        document.getElementById("like_dislike" + i).appendChild(plike);
+
+        plike.addEventListener("click", likeFunction);
+
+        function likeFunction(arraydata) {
+          var dataUpdate;
+          if (arraydata[i].like == 0) {
+            let UserName = sessionStorage.getItem("user");
+            var arrayUser = UserName.split(",");
+            console.log(arrayUser);
+            const like = arraydata[i].like + 1;
+            dataUpdate = {
+              like: like,
+              usersLiked: arrayUser[3],
+            };
+          } else {
+            const like = arraydata[i].like - 1;
+            dataUpdate = {
+              like: like,
+              usersLiked: arrayUser[3],
+            };
+          }
+
+          console.log(dataUpdate);
+
+          var requestOptions = {
+            method: "PUT",
+            body: JSON.stringify(dataUpdate),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          try {
+            fetch(
+              `http://localhost:3001/api/poste/modifier_post/${arraydata[i]._id}`,
+              requestOptions
+            ).then((response) => {
+              return response.json();
+            });
+          } catch (error) {
+            console.log("Error:", error);
+          }
+        }
+
+        let dislike = document.createElement("img");
+        dislike.src = down;
+        dislike.alt = "dislike";
+        dislike.id = "dislike" + i;
+        document.getElementById("like_dislike" + i).appendChild(dislike);
+
+        let pDisLike = document.createElement("p");
+        pDisLike.id = "plike" + i;
+        pDisLike.innerText = arraydata[i].dislike;
+        document.getElementById("like_dislike" + i).appendChild(pDisLike);
       }
 
       // console.log(y);

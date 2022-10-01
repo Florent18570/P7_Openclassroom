@@ -93,7 +93,7 @@ exports.upload2 = async (req, res, next) => {
 exports.postlike = (req, res, next) => {
   console.log(req.body.userid[2]);
 
-  switch (req.body.like) {
+  switch (req.body.case) {
     //check if the user had liked or disliked the sauce
     //uptade the sauce, send message/error
 
@@ -140,7 +140,7 @@ exports.postlike = (req, res, next) => {
             });
         } else {
           deleteUser = post.usersLiked.filter((e) => e !== req.body.userid[2]);
-          likes = post.like + -1;
+          likes = post.like - 1;
 
           NewPostUser.updateOne(
             { _id: req.params.id },
@@ -158,5 +158,76 @@ exports.postlike = (req, res, next) => {
             });
         }
       });
+      break;
+    case -1:
+      NewPostUser.findOne({ _id: req.params.id }).then((post) => {
+        if (post.usersDisliked.length != 0) {
+          console.log("liste des utilisateurs like", post.usersDisliked);
+          console.log("utlisateur ajouter", req.body.userid[2]);
+          for (var i = 0; i < post.usersDisliked.length; i++) {
+            // Quand l'utilisateur existe déjà (donc like -1)
+            if (req.body.userid[2] === post.usersDisliked[i]) {
+              var searchUserDisLike = 1;
+              // console.log("utilisateur existe -1");
+              // Quand l'utilisateur existe pas (donc like +1)
+            } else {
+              var searchUserDisLike = 0;
+
+              console.log("utilisateur existe pas +1");
+            }
+          }
+        } else {
+          var searchUserDisLike = 0;
+          console.log("ezrz");
+        }
+
+        // console.log("liste des utilisateurs bdd", post.usersDisliked);
+        post.usersDisliked.push(req.body.userid[2]);
+        // console.log("utlisateur ajouter", post.usersDisliked);
+
+        if (searchUserDisLike == 0) {
+          console.log("un dislike à ajouté");
+          dislikes = post.dislike + 1;
+          NewPostUser.updateOne(
+            { _id: req.params.id },
+            {
+              dislike: dislikes,
+              usersDisliked: post.usersDisliked,
+              _id: req.params.id,
+            }
+          )
+            .then(() => {
+              res.status(201).json({ dislikes });
+            })
+            .catch((error) => {
+              res.status(400).json({ error: error });
+            });
+        } else {
+          console.log("un dislike retirer");
+          deleteUser2 = post.usersDisliked.filter(
+            (e) => e !== req.body.userid[2]
+          );
+          dislikes = post.dislike - 1;
+
+          console.log(dislikes, "     ", post.dislike);
+          console.log(deleteUser2);
+
+          NewPostUser.updateOne(
+            { _id: req.params.id },
+            {
+              dislike: dislikes,
+              usersDisliked: deleteUser2,
+              _id: req.params.id,
+            }
+          )
+            .then(() => {
+              res.status(201).json({ dislikes });
+            })
+            .catch((error) => {
+              res.status(400).json({ error: error });
+            });
+        }
+      });
+      break;
   }
 };

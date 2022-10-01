@@ -32,20 +32,24 @@ const GetPost = () => {
       var requestOptions = null;
     }
 
-    fetch("http://localhost:3001/api/poste/getpost", requestOptions)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        var arraydata = Object.values(data.reverse());
-        console.log(data);
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/poste/getpost",
+        requestOptions
+      );
+      let data = await response.json();
 
-        setData(arraydata);
+      var arraydata = Object.values(data.reverse());
+      console.log(data);
 
-        // window.setInterval(() => {
-        //   interval(data, i);
-        // }, 60000);
-      });
+      setData(arraydata);
+
+      // window.setInterval(() => {
+      //   interval(data, i);
+      // }, 60000);
+    } catch (error) {
+      console.log("Error:", error);
+    }
   }
 
   function interval() {
@@ -96,15 +100,23 @@ const GetPost = () => {
     }
   }
 
-  const likeFunction = (id) => {
+  const likeDislikeFunction = async (id, choice) => {
     let UserName = sessionStorage.getItem("user");
     var arrayUser = UserName.split(",");
-
-    const dataUpdate = {
-      userid: arrayUser,
-      idPost: id,
-      like: 1,
-    };
+    var dataUpdate;
+    if (choice === 1) {
+      dataUpdate = {
+        userid: arrayUser,
+        idPost: id,
+        case: 1,
+      };
+    } else {
+      dataUpdate = {
+        userid: arrayUser,
+        idPost: id,
+        case: -1,
+      };
+    }
 
     console.log(dataUpdate);
 
@@ -117,15 +129,15 @@ const GetPost = () => {
     };
 
     try {
-      fetch(`http://localhost:3001/api/poste/like/${id}`, requestOptions)
-        .then((response) => {
-          return response.json();
-        })
-        .then((numberLike) => {
-          console.log(numberLike.likes);
-          setlike(numberLike.likes);
-          window.location.reload();
-        });
+      const response = await fetch(
+        `http://localhost:3001/api/poste/like/${id}`,
+        requestOptions
+      );
+
+      let numberLike = await response.json();
+      console.log(numberLike.likes);
+      setlike(numberLike.likes);
+      window.location.reload();
     } catch (error) {
       console.log("Error:", error);
     }
@@ -145,7 +157,6 @@ const GetPost = () => {
   };
 
   function renderTable() {
-    var i = -1;
     return (
       <>
         <ul>
@@ -195,20 +206,18 @@ const GetPost = () => {
                       }
                       alt="imagePost"
                     />
-                    <div id={"like_dislike" + item._id}>
-                      {(i = i + 1)}
-                      <img
-                        src={coeur}
-                        alt="like"
-                        id={"like" + item._id}
-                        onClick={() => likeFunction(item._id)}
-                      />
-                      <p
-                        id={"plike" + item._id}
-                        onClick={() => likeFunction(item._id)}
-                      >
-                        {item.like}
-                      </p>
+                    <div
+                      id={"like_dislike" + item._id}
+                      onClick={() => likeDislikeFunction(item._id, 1)}
+                    >
+                      <img src={coeur} alt="like" id={"like" + item._id} />
+                      <p id={"plike" + item._id}>{item.like}</p>
+                    </div>
+
+                    <div
+                      id={"like_dislike" + item._id}
+                      onClick={() => likeDislikeFunction(item._id, -1)}
+                    >
                       <img src={down} alt="dislike" id={"dislike" + item._id} />
                       <p id={"pdislike" + item._id}>{item.dislike}</p>
                     </div>

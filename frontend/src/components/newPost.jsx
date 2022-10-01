@@ -47,6 +47,8 @@ class NewPost extends React.Component {
     formdata.append("inputTextPost", inputText);
     formdata.append("datePost", date);
 
+    console.log(document.getElementById("file").files[0]);
+
     if (sessionStorage.getItem("user") != null) {
       var requestOptions = {
         method: "POST",

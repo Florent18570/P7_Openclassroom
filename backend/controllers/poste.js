@@ -1,5 +1,7 @@
 const NewPostUser = require("../models/poste.js");
 var mongoose = require("mongoose");
+var fs = require("fs");
+const multer = require("multer");
 
 exports.newPost = async (req, res, next) => {
   try {
@@ -11,6 +13,7 @@ exports.newPost = async (req, res, next) => {
       datePost: req.body.datePost,
       image: req.file.filename,
     });
+
     console.log(postUser);
     console.log(req.body.inputTextPost);
 
@@ -46,7 +49,16 @@ exports.getPostSelected = (req, res, next) => {
 exports.deleteposte = async (req, res, next) => {
   try {
     const deleteposteId = await NewPostUser.findById(req.params.id);
+    console.log(deleteposteId);
     await deleteposteId.remove();
+
+    // delete file named 'sample.txt'
+    fs.unlink(`images/${deleteposteId.image}`, function (err) {
+      if (err) throw err;
+      // if no error, file has been deleted successfully
+      console.log("File deleted!");
+    });
+
     response.status(201).json({ message: "suppression réussie" });
   } catch (e) {
     console.log(req.params.id);
@@ -61,4 +73,90 @@ exports.update = (req, res, next) => {
   )
     .then(res.status(200).json({ message: "Post modifié" }))
     .catch((error) => res.status(400).json({ error }));
+};
+
+exports.upload2 = async (req, res, next) => {
+  try {
+    // delete file named 'sample.txt'
+    // fs.unlink(`images/${req.body.oldimage}`, function (err) {
+    //   if (err) throw err;
+    //   // if no error, file has been deleted successfully
+    //   console.log("File deleted!");
+    // });
+
+    await res.status(201).json({ message: req.file.filename });
+  } catch (errors) {
+    await res.status(405).json({ errors: errors.message });
+  }
+};
+
+exports.postlike = (req, res, next) => {
+  console.log(req.body.userid[2]);
+
+  switch (req.body.like) {
+    //check if the user had liked or disliked the sauce
+    //uptade the sauce, send message/error
+
+    case 1:
+      NewPostUser.findOne({ _id: req.params.id }).then((post) => {
+        if (post.usersLiked.length != 0) {
+          console.log("liste des utilisateurs like", post.usersLiked);
+          console.log("utlisateur ajouter", req.body.userid[2]);
+          for (var i = 0; i < post.usersLiked.length; i++) {
+            // Quand l'utilisateur existe déjà (donc like -1)
+            if (req.body.userid[2] === post.usersLiked[i]) {
+              var searchUserLike = 1;
+              // console.log("utilisateur existe -1");
+              // Quand l'utilisateur existe pas (donc like +1)
+            } else {
+              var searchUserLike = 0;
+              // console.log("utilisateur existe pas +1");
+            }
+          }
+        } else {
+          var searchUserLike = 0;
+        }
+
+        console.log("liste des utilisateurs bdd", post.usersLiked);
+        post.usersLiked.push(req.body.userid[2]);
+        console.log("utlisateur ajouter", post.usersLiked);
+
+        if (searchUserLike == 0) {
+          console.log("un like à ajouté");
+          likes = post.like + 1;
+          NewPostUser.updateOne(
+            { _id: req.params.id },
+            {
+              like: post.like + 1,
+              usersLiked: post.usersLiked,
+              _id: req.params.id,
+            }
+          )
+            .then(() => {
+              res.status(201).json({ likes });
+            })
+            .catch((error) => {
+              res.status(400).json({ error: error });
+            });
+        } else {
+          deleteUser = post.usersLiked.filter((e) => e !== req.body.userid[2]);
+          likes = post.like + -1;
+
+          NewPostUser.updateOne(
+            { _id: req.params.id },
+            {
+              like: likes,
+              usersLiked: deleteUser,
+              _id: req.params.id,
+            }
+          )
+            .then(() => {
+              res.status(201).json({ likes });
+            })
+            .catch((error) => {
+              res.status(400).json({ error: error });
+            });
+        }
+      });
+  }
 };

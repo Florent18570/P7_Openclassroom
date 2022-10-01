@@ -387,4 +387,31 @@ h1 {
   font-size: 21px;
   line-height: 24px;
 }
+
+.div_bottom {
+  color: blue;
+  width: 680px;
+  height: auto !important;
+  position: relative;
+  max-width: 100%;
+  margin: auto;
+}
+
+.imgPost {
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0 0 21px 21px;
+}
+
+.troispoints {
+  width: 30px;
+  height: 30px;
+}
+
+.deleteModify {
+  display: none;
+}
 /*# sourceMappingURL=main.css.map */

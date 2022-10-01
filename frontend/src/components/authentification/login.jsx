@@ -95,7 +95,7 @@ class register extends React.Component {
                 onChange={this.handleChange}
               />
               <input
-                type="text"
+                type="password"
                 onChange={this.handleChange}
                 name="password"
                 placeholder="password"

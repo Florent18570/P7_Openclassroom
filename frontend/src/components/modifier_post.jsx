@@ -11,6 +11,7 @@ class NewPost extends React.Component {
     super(props);
     let UserName = sessionStorage.getItem("user");
     let arrayUser = UserName.split(",");
+
     // console.log(arrayUser);
     this.state = {
       inputTextPost: "toto",
@@ -49,7 +50,8 @@ class NewPost extends React.Component {
 
         this.setState({
           inputTextPost: datatext,
-          image: "post.image",
+          image: image,
+          oldImage: image,
         });
       };
 
@@ -64,6 +66,47 @@ class NewPost extends React.Component {
     this.setState({
       inputTextPost: e.target.value,
     });
+  };
+
+  handleChangeImage = (e) => {
+    // const file = document.getElementById("file").files[0].name;
+    // this.setState({
+    //   image: file,
+    // });
+
+    const { inputTextPost, image, oldImage } = this.state;
+
+    var imageNew = document.querySelector("#file").files[0];
+    var formData = new FormData();
+    formData.append("image", imageNew);
+    formData.append("oldimage", oldImage);
+
+    var requestOptions = {
+      method: "POST",
+      body: formData,
+    };
+
+    fetch("http://localhost:3001/api/poste/upload", requestOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // console.log(data);
+        // console.log(data.message);
+
+        var oldImages;
+        if (oldImages != []) {
+          var oldImages = [];
+          console.log("tata");
+        }
+        oldImages.push(data.message);
+        console.log(oldImages);
+
+        this.setState({
+          image: data.message,
+          oldImage: data.message,
+        });
+      });
   };
 
   send = () => {
@@ -84,7 +127,7 @@ class NewPost extends React.Component {
       prenom: arrayUser[1],
       inputTextPost: inputTextPost,
       datePost: date,
-      image: "toto",
+      image: image,
     };
 
     // if (sessionStorage.getItem("user") != null) {
@@ -155,14 +198,21 @@ class NewPost extends React.Component {
                 value={this.state.inputTextPost}
               />
 
+              <p>Image du Post</p>
+              <img
+                src={`http://localhost/projet7/backend/images/${this.state.image}`}
+                alt="fermer"
+              />
+
               <div className="button_bottom">
                 <img href={appareilPhoto}></img>
-                <label for="file">Image</label>
+                <label for="file">Une modification de l'image ? </label>
                 <input
                   className="buttonImage"
                   type="file"
                   id="file"
-                  name="imageURL"
+                  name="image"
+                  onChange={this.handleChangeImage}
                 />
 
                 <button onClick={this.send} className="publier" type="submit">

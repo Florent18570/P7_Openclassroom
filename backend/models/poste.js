@@ -7,8 +7,10 @@ const NewPostUser = mongoose.Schema({
   inputTextPost: { type: String, required: true },
   datePost: { type: String },
   image: { type: String },
-  // like: { type: Number },
-  // dislike: { type: Number },
+  like: { type: Number, default: 0 },
+  dislike: { type: Number, default: 0 },
+  usersLiked: { type: [String] },
+  usersDisliked: { type: [String] },
 });
 
 module.exports = mongoose.model("newPostUser", NewPostUser);

@@ -1,16 +1,12 @@
 import React from "react";
 import Bienvenue from "./accueil/bienvenue";
-import GetPost from "./accueil/postes";
 import { Link } from "react-router-dom";
 import appareilPhoto from "../Images/dislike.png";
 import fermer from "../../src/Images/fermer.png";
-import { useState } from "react";
 
 class NewPost extends React.Component {
   constructor(props) {
     super(props);
-    let UserName = sessionStorage.getItem("user");
-    let arrayUser = UserName.split(",");
 
     // console.log(arrayUser);
     this.state = {
@@ -74,7 +70,7 @@ class NewPost extends React.Component {
     //   image: file,
     // });
 
-    const { inputTextPost, image, oldImage } = this.state;
+    const oldImage = this.state.oldImage;
 
     var imageNew = document.querySelector("#file").files[0];
     var formData = new FormData();
@@ -95,8 +91,8 @@ class NewPost extends React.Component {
         // console.log(data.message);
 
         var oldImages;
-        if (oldImages != []) {
-          var oldImages = [];
+        if (oldImages !== []) {
+          oldImages = [];
           console.log("tata");
         }
         oldImages.push(data.message);
@@ -205,7 +201,7 @@ class NewPost extends React.Component {
               />
 
               <div className="button_bottom">
-                <img href={appareilPhoto}></img>
+                <img href={appareilPhoto} alt="appareil"></img>
                 <label for="file">Une modification de l'image ? </label>
                 <input
                   className="buttonImage"

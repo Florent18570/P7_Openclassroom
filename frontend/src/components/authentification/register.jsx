@@ -1,6 +1,7 @@
 import React from "react";
 import "../../styles/main.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 class register extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class register extends React.Component {
       email: "",
       password: "",
     };
+    sessionStorage.removeItem("deconnexionMessage");
   }
 
   handleChange = (event) => {
@@ -23,29 +25,60 @@ class register extends React.Component {
   };
 
   send = async () => {
-    const { nom, prenom, email, password } = this.state;
+    try {
+      const { nom, prenom, email, password } = this.state;
+      const data = {
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        password: password,
+      };
 
-    const data = {
-      nom: nom,
-      prenom: prenom,
-      email: email,
-      password: password,
-    };
-    console.log(data);
-    fetch("http://localhost:3001/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      var requestOptions = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch(
+        `http://localhost:3001/api/auth/signup`,
+        requestOptions
+      );
+
+      let numberLike = await response.json();
+      console.log(numberLike);
+
+      if (numberLike.message === "Utilisateur créé !") {
+        var inscription = "inscription";
+        sessionStorage.setItem("inscription", inscription);
+        window.location = "/login";
+      } else {
+        toast.error("Erreur: L'adresse mail ou le mot de passe existe déjà !", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      toast.error(
+        "Erreur: Erreur de connexion à la base de données. Merci de retenter plus tard ",
+        {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
   };
 
   render() {
@@ -93,15 +126,9 @@ class register extends React.Component {
                 onChange={this.handleChange}
               />
 
-              <Link to="/login">
-                <button
-                  type="button"
-                  className="btcvalider"
-                  onClick={this.send}
-                >
-                  Valider
-                </button>
-              </Link>
+              <button type="button" className="btcvalider" onClick={this.send}>
+                Valider
+              </button>
             </div>
           </form>
         </section>

@@ -18,9 +18,9 @@ exports.newPost = async (req, res, next) => {
     console.log(req.body.inputTextPost);
 
     const newPost = await postUser.save();
-    res.json(201).json(newPost);
+    return res.json(201).json(newPost);
   } catch (errors) {
-    res.status(405).json({ errors: errors.message });
+    return res.status(405).json({ errors: errors.message });
   }
 };
 

@@ -14,10 +14,20 @@ exports.signup = (req, res, next) => {
       });
       user
         .save()
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ error }));
+        .then(() => {
+          console.log("totozzzzzz");
+          res.status(201).json({ message: "Utilisateur créé !" });
+        })
+        .catch((error) => {
+          console.log("toto");
+          res.status(400).json({ error });
+        });
     })
-    .catch((error) => res.status(500).json({ error }));
+
+    .catch((error) => {
+      console.log("erreurrrrrr");
+      res.status(500).json({ error });
+    });
 };
 
 exports.login = (req, res, next) => {

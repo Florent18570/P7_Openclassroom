@@ -1,10 +1,14 @@
 import React from "react";
+import { toast } from "react-toastify";
 import "../../styles/main.css";
 import { Link } from "react-router-dom";
+
+import { useEffect } from "react";
 
 class register extends React.Component {
   constructor(props) {
     super(props);
+
     if (!window.location.hash) {
       window.location = window.location + "#connexion";
       window.location.reload();
@@ -13,6 +17,33 @@ class register extends React.Component {
       email: "",
       password: "",
     };
+
+    if (sessionStorage.getItem("deconnexionMessage")) {
+      toast.success("Déconnexion", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+
+    if (document.location.pathname + "#connexion" == "/login#connexion") {
+      if (sessionStorage.getItem("inscription") == "inscription") {
+        toast.success("inscription réussi ! ", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }
+    // sessionStorage.removeItem("inscription");
   }
 
   handleChange = (event) => {
@@ -47,8 +78,10 @@ class register extends React.Component {
         .then((response) => response.json())
         .then((data) => {
           console.log(data.success);
+          console.log("Sucess:", data);
           if (data.success) {
             console.log("Sucess:", data);
+
             let arrayUser = [
               data.prenom,
               data.nom,
@@ -58,14 +91,35 @@ class register extends React.Component {
             ];
             console.log(data.Adminisatrateur);
             sessionStorage.setItem("user", arrayUser);
+
+            var loginMessage = "deconnexion";
+            sessionStorage.setItem("messageLogin", loginMessage);
             window.location = "/accueil";
+
             // Envoie du token
+          } else {
+            toast.error("Mauvais nom d'utilisateur ou mots de passe", {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
         });
     } catch (error) {
+      toast.error("Erreur de connexion à la base de données", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       console.error(error);
     }
   };
@@ -83,7 +137,6 @@ class register extends React.Component {
               </button>
             </Link>
           </div>
-
           <form action="accueil.php" id="formlogin">
             <div className="login">
               <h1>Connexion à votre compte</h1>

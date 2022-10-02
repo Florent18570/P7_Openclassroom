@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../Images/logo.png";
+import { toast } from "react-toastify";
 
 function register() {
   return (
@@ -26,9 +27,10 @@ function register() {
   );
 }
 
-function clearStorage() {
-  localStorage.clear();
+function deconnexion() {
   sessionStorage.clear();
+  var deconnexionMessage = "A bientôt ! ";
+  sessionStorage.setItem("deconnexionMessage", deconnexionMessage);
 }
 
 function login() {
@@ -38,7 +40,7 @@ function login() {
         <img src={logo} alt="logo Groupomania" />
         <nav>
           <Link to="/login">
-            <button onClick={clearStorage} class="inscription">
+            <button class="inscription" onClick={deconnexion}>
               Se déconnecter
             </button>
           </Link>
@@ -50,7 +52,6 @@ function login() {
 
 export default function registerOrLogin() {
   let data = sessionStorage.getItem("user");
-  // console.log(data);
 
   if (data) {
     return login();

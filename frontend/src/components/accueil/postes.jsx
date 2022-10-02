@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useContext, Component } from "react";
-import { UserContext } from "../../App";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import troispoints from "../../Images/troispoints.png";
 import coeur from "../../Images/coeur.png";
 import down from "../../Images/dislike.png";
-import ReactDOM from "react-dom";
 var moment = require("moment"); // require
 
 const GetPost = () => {
   const [arrayPost, setData] = useState([]);
   const [detailsShown, setDetailShown] = useState([]);
 
-  const [like, setlike] = useState([]);
+  // const [like, setlike] = useState([]);
 
   useEffect(() => {
     getData();
@@ -29,7 +26,7 @@ const GetPost = () => {
       };
     } else {
       window.location = "./login#connexion";
-      var requestOptions = null;
+      requestOptions = null;
     }
 
     try {
@@ -52,12 +49,12 @@ const GetPost = () => {
     }
   }
 
-  function interval() {
-    for (var y = 0; y < arrayPost.length; y++) {
-      // console.log(arraydata, y);
-      datePost(arrayPost, y);
-    }
-  }
+  // function interval() {
+  //   for (var y = 0; y < arrayPost.length; y++) {
+  //     // console.log(arraydata, y);
+  //     datePost(arrayPost, y);
+  //   }
+  // }
 
   function datePost(arrayPost) {
     let datepost = new Date(arrayPost);
@@ -136,7 +133,7 @@ const GetPost = () => {
 
       let numberLike = await response.json();
       console.log(numberLike.likes);
-      setlike(numberLike.likes);
+      // setlike(numberLike.likes);
       window.location.reload();
     } catch (error) {
       console.log("Error:", error);

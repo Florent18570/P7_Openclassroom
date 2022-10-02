@@ -37,7 +37,7 @@ class NewPost extends React.Component {
 
     const date = new Date();
 
-    const { userId, inputText, imageURL } = this.state;
+    const inputText = this.state.inputText;
 
     var formdata = new FormData();
     formdata.append("image", document.getElementById("file").files[0]);
@@ -58,7 +58,7 @@ class NewPost extends React.Component {
       };
     } else {
       window.location = "./login#connexion";
-      var requestOptions = null;
+      requestOptions = null;
     }
 
     try {
@@ -109,7 +109,7 @@ class NewPost extends React.Component {
               />
 
               <div className="button_bottom">
-                <img href={appareilPhoto}></img>
+                <img href={appareilPhoto} alt="appareil"></img>
                 <label for="file">Image</label>
                 <input
                   className="buttonImage"

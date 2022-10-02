@@ -1,7 +1,6 @@
 // ID retrieval with URL
 var urlcourante = document.location.href;
 var urlData = new URL(urlcourante);
-let params = new URLSearchParams(window.location.search);
 
 if (urlData.searchParams.has("id") || urlData.searchParams.has("delete_post")) {
   var id = urlData.searchParams.get("id");
@@ -22,7 +21,7 @@ function deletePostId(id) {
     };
   } else {
     window.location = "./login#connexion";
-    var requestOptions = null;
+    requestOptions = null;
   }
 
   fetch(`http://localhost:3001/api/poste/deletepost${id}`, requestOptions)

@@ -41,7 +41,7 @@ mongoose
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(bodyParser.json());
 
-let port = 3001;
+let port = process.env.PORT || 3001;
 const portArg = process.argv[2];
 if (portArg !== undefined && !Number.isNaN(parseInt(portArg, 10))) {
   port = parseInt(portArg, 10);

@@ -174,16 +174,18 @@ class NewPost extends React.Component {
       <>
         <section className="bigContainer" id="bigContainer">
           <Bienvenue />
-          <div className="newPostContainer">
+          <div className="modificationPost  ">
             <div class="addPostTop">
               <div className="flex">
                 <h2>Modification d'un poste</h2>
                 <Link to="/accueil">
-                  <img src={fermer} alt="fermer nouveau post" />
+                  <img
+                    src={fermer}
+                    alt="fermer nouveau post"
+                    className="img_croix"
+                  />
                 </Link>
               </div>
-
-              <p>Modification du text de poste</p>
             </div>
 
             <form action="">
@@ -194,15 +196,9 @@ class NewPost extends React.Component {
                 value={this.state.inputTextPost}
               />
 
-              <p>Image du Post</p>
-              <img
-                src={`http://localhost/projet7/backend/images/${this.state.image}`}
-                alt="fermer"
-              />
+              <h2>Image du Post : </h2>
 
-              <div className="button_bottom">
-                <img href={appareilPhoto} alt="appareil"></img>
-                <label for="file">Une modification de l'image ? </label>
+              <div className="button_bottom_modifier">
                 <input
                   className="buttonImage"
                   type="file"
@@ -210,11 +206,18 @@ class NewPost extends React.Component {
                   name="image"
                   onChange={this.handleChangeImage}
                 />
-
-                <button onClick={this.send} className="publier" type="submit">
-                  Valider
-                </button>
+                <img
+                  src={`http://localhost/projet7/backend/images/${this.state.image}`}
+                  alt="fermer"
+                />
               </div>
+              <button
+                onClick={this.send}
+                className="modif_publier"
+                type="submit"
+              >
+                Valider
+              </button>
             </form>
           </div>
         </section>

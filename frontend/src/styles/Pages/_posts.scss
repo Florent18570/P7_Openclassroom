@@ -1,3 +1,47 @@
+.toggle {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: white;
+  border-radius: 28px 28px 28px 28px;
+  padding: 10px;
+  border: #4e5166 solid 2px;
+  animation-name: cssAnimation;
+  animation-duration: 500ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  z-index: 2;
+  a {
+    text-decoration: none;
+    color: #4e5166; /*par exemple*/
+  }
+}
+
+.none {
+  display: none;
+}
+
+@keyframes cssAnimation {
+  0% {
+    transform: rotate(0deg) scale(0);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+.toggle::before {
+  content: "";
+  border-left: #4e5166 solid 2px;
+  border-right: #4e5166 solid 2px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #ffffff;
+  position: absolute;
+  top: -10px;
+}
+
 // Container Postuser TOP
 .containerTop {
   color: $color-Tertiaire;

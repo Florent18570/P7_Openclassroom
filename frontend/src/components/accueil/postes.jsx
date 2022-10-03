@@ -8,7 +8,7 @@ var moment = require("moment"); // require
 const GetPost = () => {
   const [arrayPost, setData] = useState([]);
   const [detailsShown, setDetailShown] = useState([]);
-
+  const [toggle, settoggle] = useState([]);
   // const [like, setlike] = useState([]);
 
   useEffect(() => {
@@ -148,9 +148,11 @@ const GetPost = () => {
     if (index >= 0) {
       shownState.splice(index, 1);
       setDetailShown(shownState);
+      settoggle("none");
     } else {
       shownState.push(id);
       setDetailShown(shownState);
+      settoggle("toggle");
     }
   };
 
@@ -175,22 +177,24 @@ const GetPost = () => {
                     onClick={() => toggleShown(item._id)}
                   />
 
-                  {detailsShown.includes(item._id) && (
-                    <a
-                      id={"modifier" + item._id}
-                      href={`/modifier_post/?id_postupdate=${item._id}`}
-                    >
-                      <p className="user">Modifier</p>
-                    </a>
-                  )}
-                  {detailsShown.includes(item._id) && (
-                    <a
-                      id={"suprimer" + item._id}
-                      href={`/delete_post/?id=${item._id}`}
-                    >
-                      <p className="user">Supprimer</p>
-                    </a>
-                  )}
+                  <div className={toggle}>
+                    {detailsShown.includes(item._id) && (
+                      <a
+                        id={"modifier" + item._id}
+                        href={`/modifier_post/?id_postupdate=${item._id}`}
+                      >
+                        <p className="user">Modifier</p>
+                      </a>
+                    )}
+                    {detailsShown.includes(item._id) && (
+                      <a
+                        id={"suprimer" + item._id}
+                        href={`/delete_post/?id=${item._id}`}
+                      >
+                        <p className="user">Supprimer</p>
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 <div id={"div_bottom" + item._id} className="div_bottom">

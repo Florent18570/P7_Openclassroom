@@ -10,13 +10,11 @@ function register() {
         <img src={logo} alt="logo Groupomania" />
         <nav>
           <Link to="/login">
-            {" "}
             <button href="login.html" class="login">
               Login
             </button>
           </Link>
           <Link to="/register">
-            {" "}
             <button href="inscription.html" class="inscription">
               S'inscrire
             </button>

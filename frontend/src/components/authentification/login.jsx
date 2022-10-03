@@ -140,19 +140,25 @@ class register extends React.Component {
           <form action="accueil.php" id="formlogin">
             <div className="login">
               <h1>Connexion à votre compte</h1>
-              <input
-                type="text"
-                name="email"
-                className="input_top"
-                placeholder="email"
-                onChange={this.handleChange}
-              />
-              <input
-                type="password"
-                onChange={this.handleChange}
-                name="password"
-                placeholder="password"
-              />
+
+              <div class="input-block">
+                <label for="">Email</label>
+                <input
+                  type="text"
+                  name="email"
+                  className="input_top"
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div class="input-block">
+                <label for="">Password</label>
+                <input
+                  type="password"
+                  onChange={this.handleChange}
+                  name="password"
+                />
+              </div>
 
               <button onClick={this.send} type="button" className="btcvalider">
                 Valider

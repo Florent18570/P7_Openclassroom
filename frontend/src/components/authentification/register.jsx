@@ -97,34 +97,46 @@ class register extends React.Component {
 
           <form action="accueil.php" id="formlogin">
             <div className="login">
-              <h1>Inscription</h1>
-              <input
-                name="nom"
-                placeholder="Nom"
-                onChange={this.handleChange}
-                value={this.Nom}
-              />
-              <input
-                name="prenom"
-                placeholder="prenom"
-                onChange={this.handleChange}
-                value={this.prenom}
-              />
-              <input
-                name="email"
-                className="email"
-                value={this.email}
-                placeholder="email"
-                onChange={this.handleChange}
-              />
-              <input
-                name="password"
-                type="password"
-                className="password"
-                value={this.password}
-                placeholder="password"
-                onChange={this.handleChange}
-              />
+              <h1 class="inscription_bottom">Inscription</h1>
+
+              <div class="input-block">
+                <label for="">Nom</label>
+                <input
+                  name="nom"
+                  onChange={this.handleChange}
+                  value={this.Nom}
+                />
+              </div>
+
+              <div class="input-block">
+                <label for="">Prénom</label>
+                <input
+                  name="prenom"
+                  onChange={this.handleChange}
+                  value={this.prenom}
+                />
+              </div>
+
+              <div class="input-block">
+                <label for="">Email</label>
+                <input
+                  name="email"
+                  className="email"
+                  value={this.email}
+                  onChange={this.handleChange}
+                />
+              </div>
+
+              <div class="input-block">
+                <label for="">Password</label>
+                <input
+                  name="password"
+                  type="password"
+                  className="password"
+                  value={this.password}
+                  onChange={this.handleChange}
+                />
+              </div>
 
               <button type="button" className="btcvalider" onClick={this.send}>
                 Valider

@@ -9,10 +9,19 @@
   font-family: Lato, Helvetica, sans-serif;
 }
 
+body {
+  height: 500px;
+  background: $color-Tertiaire;
+}
+
 h1 {
   font-weight: bold;
   font-size: 39px;
-  color: #ff310a;
+  color: #ffffff;
+}
+
+h1 {
+  font-size: 30px;
 }
 
 .flex {

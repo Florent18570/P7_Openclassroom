@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import troispoints from "../../Images/troispoints.png";
 import coeur from "../../Images/coeur.png";
 import down from "../../Images/dislike.png";
+import imageProfil from "../../Images/iconeProfil.png";
 var moment = require("moment"); // require
 
 const GetPost = () => {
@@ -90,9 +91,9 @@ const GetPost = () => {
 
       default:
         return (
-          <h1>
+          <p>
             Il y a {postday} jours et {postHour}h{postMinute}
-          </h1>
+          </p>
         );
     }
   }
@@ -156,54 +157,62 @@ const GetPost = () => {
   function renderTable() {
     return (
       <>
-        <ul>
-          {arrayPost.map((item) => {
-            return (
-              <>
-                <div className="containerPost" id={"containerPost" + item._id}>
-                  <div className="containerTop" id={"containerTop" + item._id}>
-                    <p>{item.nom + " " + item.prenom}</p>
+        {arrayPost.map((item) => {
+          return (
+            <>
+              <div className="containerPost" id={"containerPost" + item._id}>
+                <div className="containerTop" id={"containerTop" + item._id}>
+                  <img src={imageProfil} className="imageProfil" />
+                  <h2 className="IdentifiantPost">
+                    {item.nom + " " + item.prenom}
+                  </h2>
 
-                    {datePost(item.datePost)}
-                    <img
-                      src={troispoints}
-                      alt="imagetroispoints"
-                      id={"imagetroispoints" + item._id}
-                      className="troispoints"
-                      onClick={() => toggleShown(item._id)}
-                    />
+                  <img
+                    src={troispoints}
+                    alt="imagetroispoints"
+                    id={"imagetroispoints" + item._id}
+                    className="troispoints"
+                    onClick={() => toggleShown(item._id)}
+                  />
 
-                    {detailsShown.includes(item._id) && (
-                      <a
-                        id={"modifier" + item._id}
-                        href={`/modifier_post/?id_postupdate=${item._id}`}
-                      >
-                        <p className="user">Modifier</p>
-                      </a>
-                    )}
-                    {detailsShown.includes(item._id) && (
-                      <a
-                        id={"suprimer" + item._id}
-                        href={`/delete_post/?id=${item._id}`}
-                      >
-                        <p className="user">Supprimer</p>
-                      </a>
-                    )}
-                  </div>
+                  {detailsShown.includes(item._id) && (
+                    <a
+                      id={"modifier" + item._id}
+                      href={`/modifier_post/?id_postupdate=${item._id}`}
+                    >
+                      <p className="user">Modifier</p>
+                    </a>
+                  )}
+                  {detailsShown.includes(item._id) && (
+                    <a
+                      id={"suprimer" + item._id}
+                      href={`/delete_post/?id=${item._id}`}
+                    >
+                      <p className="user">Supprimer</p>
+                    </a>
+                  )}
+                </div>
 
-                  <div id={"div_bottom" + item._id} className="div_bottom">
+                <div id={"div_bottom" + item._id} className="div_bottom">
+                  <div className="headerBottom">
                     <p id={"p" + item._id} className="post">
                       {item.inputTextPost}
                     </p>
-                    <img
-                      id={"img" + item._id}
-                      className="imgPost"
-                      src={
-                        "http://localhost/projet7/backend/images/" + item.image
-                      }
-                      alt="imagePost"
-                    />
+                    <nav>{datePost(item.datePost)}</nav>
+                  </div>
+
+                  <img
+                    id={"img" + item._id}
+                    className="imgPost"
+                    src={
+                      "http://localhost/projet7/backend/images/" + item.image
+                    }
+                    alt="imagePost"
+                  />
+
+                  <div className="avis">
                     <div
+                      className="like"
                       id={"like_dislike" + item._id}
                       onClick={() => likeDislikeFunction(item._id, 1)}
                     >
@@ -212,6 +221,7 @@ const GetPost = () => {
                     </div>
 
                     <div
+                      className="dislike"
                       id={"like_dislike" + item._id}
                       onClick={() => likeDislikeFunction(item._id, -1)}
                     >
@@ -220,10 +230,10 @@ const GetPost = () => {
                     </div>
                   </div>
                 </div>
-              </>
-            );
-          })}
-        </ul>
+              </div>
+            </>
+          );
+        })}
       </>
     );
   }

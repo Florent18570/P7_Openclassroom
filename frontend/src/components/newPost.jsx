@@ -101,20 +101,20 @@ class NewPost extends React.Component {
             </div>
 
             <form action="">
-              <input
-                onBlur={this.handleChange}
-                className="inputText"
-                type="text"
-                value={this.state.content}
-              />
+              <div className="input-block">
+                <input
+                  onBlur={this.handleChange}
+                  className="inputText"
+                  type="text"
+                  value={this.state.content}
+                />
+              </div>
 
               <div className="button_bottom">
-                <img href={appareilPhoto} alt="appareil"></img>
-                <label for="file">Image</label>
                 <input
-                  className="buttonImage"
                   type="file"
                   id="file"
+                  className="inputfile"
                   name="imageURL"
                 />
 

@@ -11,6 +11,9 @@ const NewPostUser = mongoose.Schema({
   dislike: { type: Number, default: 0 },
   usersLiked: { type: [String] },
   usersDisliked: { type: [String] },
+  commentaire: { type: [String] },
+  userCommentaire: { type: [String] },
+  modifierle: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("newPostUser", NewPostUser);

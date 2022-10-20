@@ -7,6 +7,8 @@ const stuffauthent = require("./routes/authentification.js");
 const poste = require("./routes/poste.js");
 const dotenv = require("dotenv");
 
+let port = process.env.PORT || 3001;
+
 dotenv.config();
 var helmet = require("helmet");
 app.use(helmet());
@@ -41,15 +43,14 @@ mongoose
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(bodyParser.json());
 
-let port = process.env.PORT || 3001;
 const portArg = process.argv[2];
 if (portArg !== undefined && !Number.isNaN(parseInt(portArg, 10))) {
   port = parseInt(portArg, 10);
 }
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello from Nodemon!!!</h1>");
-});
+// app.get("/", (req, res) => {
+//   res.send("<h1>Hello from Nodemon!!!</h1>");
+// });
 
 app.listen(port, () => {
   console.log(`Server is running on localhost:${port}`);
@@ -59,4 +60,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", stuffauthent);
 app.use("/api/poste", poste);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 module.exports = app;

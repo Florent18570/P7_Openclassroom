@@ -2,23 +2,47 @@ const NewPostUser = require("../models/poste.js");
 var mongoose = require("mongoose");
 var fs = require("fs");
 const multer = require("multer");
+const auth = require("../middleware/auth");
 
 exports.newPost = async (req, res, next) => {
+  // const fileStorageEngine = multer.diskStorage({
+  //   destination: (req, file, callback) => {
+  //     callback(null, "images");
+  //   },
+  //   filename: (req, file, callback) => {
+  //     callback(null, Date.now() + "--" + file.originalname);
+  //   },
+  // });
+
+  // console.log(fileStorageEngine);
+  // const upload = multer({ storage: fileStorageEngine });
+  // upload.single("image");
+
   try {
-    const postUser = new NewPostUser({
-      userId: req.body.userId,
-      nom: req.body.nom,
-      prenom: req.body.prenom,
-      inputTextPost: req.body.inputTextPost,
-      datePost: req.body.datePost,
-      image: req.file.filename,
+    var postUser;
+    console.log(req.body.image == undefined);
+    if (req.body.image == undefined) {
+      postUser = new NewPostUser({
+        userId: req.body.userId,
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        inputTextPost: req.body.inputTextPost,
+        datePost: req.body.datePost,
+        image: req.file.filename,
+      });
+    } else {
+      postUser = new NewPostUser({
+        userId: req.body.userId,
+        nom: req.body.nom,
+        prenom: req.body.prenom,
+        inputTextPost: req.body.inputTextPost,
+        datePost: req.body.datePost,
+      });
+    }
+
+    const newPost = await postUser.save().then(() => {
+      res.json(201).json(newPost);
     });
-
-    console.log(postUser);
-    console.log(req.body.inputTextPost);
-
-    const newPost = await postUser.save();
-    return res.json(201).json(newPost);
   } catch (errors) {
     return res.status(405).json({ errors: errors.message });
   }
@@ -53,11 +77,13 @@ exports.deleteposte = async (req, res, next) => {
     await deleteposteId.remove();
 
     // delete file named 'sample.txt'
-    fs.unlink(`images/${deleteposteId.image}`, function (err) {
-      if (err) throw err;
-      // if no error, file has been deleted successfully
-      console.log("File deleted!");
-    });
+    if (deleteposteId.image) {
+      fs.unlink(`images/${deleteposteId.image}`, function (err) {
+        if (err) throw err;
+        // if no error, file has been deleted successfully
+        console.log("File deleted!");
+      });
+    }
 
     response.status(201).json({ message: "suppression réussie" });
   } catch (e) {
@@ -230,4 +256,66 @@ exports.postlike = (req, res, next) => {
       });
       break;
   }
+};
+
+exports.updateCommentaire = (req, res, next) => {
+  console.log(req.body.userCommentaire, req.body.commentaire, req.params.id);
+  var postUser;
+  var postcommentaire;
+  NewPostUser.findOne({ _id: req.params.id }).then((post) => {
+    postUser = post.userCommentaire;
+    postcommentaire = post.commentaire;
+
+    postUser.push(req.body.userCommentaire);
+    postcommentaire.push(req.body.commentaire);
+
+    console.log(postUser);
+    console.log(postcommentaire);
+
+    NewPostUser.updateOne(
+      { _id: req.params.id },
+      {
+        commentaire: postcommentaire,
+        userCommentaire: postUser,
+        _id: req.params.id,
+      }
+    )
+      .then(res.status(200).json({ message: "commentaire Ajouté" }))
+      .catch((error) => res.status(400).json({ error }));
+  });
+};
+
+exports.deleteCommentaire = (req, res, next) => {
+  // console.log(req.body.userCommentaire, req.body.commentaire, req.params.id);
+  console.log(req.body.commentaire[req.body.index]);
+  var postUser;
+  var postcommentaire;
+  NewPostUser.findOne({ _id: req.params.id }).then((post) => {
+    postUser = post.userCommentaire;
+    postcommentaire = post.commentaire;
+
+    console.log(postcommentaire);
+    var index = postcommentaire.indexOf(req.body.commentaire[req.body.index]);
+    if (index > -1) {
+      postcommentaire.splice(index, 1); // Remove array element
+    }
+
+    console.log(postUser);
+    var index2 = postUser.indexOf(req.body.userCommentaire[req.body.index]);
+    if (index > -1) {
+      postUser.splice(index2, 1); // Remove array element
+    }
+    console.log(postUser);
+
+    NewPostUser.updateOne(
+      { _id: req.params.id },
+      {
+        commentaire: postcommentaire,
+        userCommentaire: postUser,
+        _id: req.params.id,
+      }
+    )
+      .then(res.status(200).json({ message: "commentaire Supprimé" }))
+      .catch((error) => res.status(400).json({ error }));
+  });
 };

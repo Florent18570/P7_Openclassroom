@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/P7_Openclassroom/static/css/main.9607bea3.css",
-    "main.js": "/P7_Openclassroom/static/js/main.fa577635.js",
+    "main.js": "/P7_Openclassroom/static/js/main.aabf6071.js",
     "static/js/787.005b46f7.chunk.js": "/P7_Openclassroom/static/js/787.005b46f7.chunk.js",
     "static/media/logo.png": "/P7_Openclassroom/static/media/logo.6af16366ed5d8cc33918.png",
     "index.html": "/P7_Openclassroom/index.html",
     "main.9607bea3.css.map": "/P7_Openclassroom/static/css/main.9607bea3.css.map",
-    "main.fa577635.js.map": "/P7_Openclassroom/static/js/main.fa577635.js.map",
+    "main.aabf6071.js.map": "/P7_Openclassroom/static/js/main.aabf6071.js.map",
     "787.005b46f7.chunk.js.map": "/P7_Openclassroom/static/js/787.005b46f7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9607bea3.css",
-    "static/js/main.fa577635.js"
+    "static/js/main.aabf6071.js"
   ]
 }

@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/P7_Openclassroom/static/css/main.7f22a5a9.css",
-    "main.js": "/P7_Openclassroom/static/js/main.eef94c7a.js",
+    "main.css": "/P7_Openclassroom/static/css/main.ee11af3c.css",
+    "main.js": "/P7_Openclassroom/static/js/main.0c6d00f7.js",
     "static/js/787.005b46f7.chunk.js": "/P7_Openclassroom/static/js/787.005b46f7.chunk.js",
     "static/media/logo.png": "/P7_Openclassroom/static/media/logo.6af16366ed5d8cc33918.png",
     "index.html": "/P7_Openclassroom/index.html",
-    "main.7f22a5a9.css.map": "/P7_Openclassroom/static/css/main.7f22a5a9.css.map",
-    "main.eef94c7a.js.map": "/P7_Openclassroom/static/js/main.eef94c7a.js.map",
+    "main.ee11af3c.css.map": "/P7_Openclassroom/static/css/main.ee11af3c.css.map",
+    "main.0c6d00f7.js.map": "/P7_Openclassroom/static/js/main.0c6d00f7.js.map",
     "787.005b46f7.chunk.js.map": "/P7_Openclassroom/static/js/787.005b46f7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7f22a5a9.css",
-    "static/js/main.eef94c7a.js"
+    "static/css/main.ee11af3c.css",
+    "static/js/main.0c6d00f7.js"
   ]
 }
